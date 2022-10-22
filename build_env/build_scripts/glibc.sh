@@ -15,7 +15,7 @@ ln -sfv ../lib/ld-linux-x86-64.so.2 $LFS/lib64/ld-lsb-x86-64.so.3
 
 patch -Np1 -i ../glibc-2.36-fhs-1.patch
 
-#mkdir -v build
+mkdir -v build
 cd       build
 
 ../configure                             \
@@ -27,16 +27,16 @@ cd       build
       libc_cv_slibdir=/usr/lib
 
 make
-make $DESTDIR=$LFS install
+make DESTDIR=$LFS install
 
 sleep 5
 
 echo
 echo "TESTING GLIBC"
 echo
-echo 'int main(){}' ? dummy.c
-$LFS_TGT-gcc dummy.c 
-readelf -l a.out | grep '/ld-linux'
+echo 'int main(){}' | gcc -xc -
+readelf -l a.out | grep ld-linux
+rm -v a.out
 
 sleep 5
 

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd $LFS/sources
 tar -xf binutils-2.39.tar.xz
 cd binutils-2.39
@@ -12,8 +14,8 @@ cd       build
              --enable-gprofng=no \
              --disable-werror
 
-make && make install
+make
+make install
 
 cd $LFS/sources
-
-rm -fr binutils-2.39.tar.xz
+rm -fr binutils-2.39

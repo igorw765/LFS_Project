@@ -11,12 +11,17 @@ cd gcc-12.2.0
 
 tar -xf ../mpfr-4.1.0.tar.xz
 mv -v mpfr-4.1.0 mpfr
-
 tar -xf ../gmp-6.2.1.tar.xz
 mv -v gmp-6.2.1 gmp
-
 tar -xf ../mpc-1.2.1.tar.gz
 mv -v mpc-1.2.1 mpc
+
+case $(uname -m) in
+  x86_64)
+    sed -e '/m64=/s/lib64/lib/' \
+        -i.orig gcc/config/i386/t-linux64
+ ;;
+esac
 
 mkdir -v build
 cd       build
@@ -45,9 +50,9 @@ make
 make install
 
 cd ..
+
 cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
-    `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/install-tools/include/limits.h
+  `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/install-tools/include/limits.h
 
 cd $LFS/sources
-
-rm -fr gcc-12.2.0.tar.xz
+rm -fr gcc-12.2.0
